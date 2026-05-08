@@ -3,338 +3,623 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Toxic Store</title>
+
+<title>TOXIC STORE</title>
 
 <style>
+
+:root{
+  --bg:#050914;
+  --card:#0f172a;
+  --neon:#ff003c;
+}
+
+*{
+  margin:0;
+  padding:0;
+  box-sizing:border-box;
+}
+
+html{
+  scroll-behavior:smooth;
+}
+
 body{
-    margin:0;
-    font-family:Arial;
-    background:#0b0b0b;
-    color:white;
+  font-family:Arial,sans-serif;
+  background:linear-gradient(180deg,#050914,#02040a);
+  color:white;
+  overflow-x:hidden;
 }
 
-/* LOGIN */
-#login{
-    position:fixed;
-    width:100%;
-    height:100%;
-    background:#000;
-    display:flex;
-    justify-content:center;
-    align-items:center;
-    flex-direction:column;
+/* FUNDO */
+
+#bg{
+  position:fixed;
+  top:0;
+  left:0;
+  width:100%;
+  height:100%;
+  z-index:-1;
 }
 
-/* INPUT */
-input{
-    padding:10px;
-    margin:5px;
-    border:none;
-    border-radius:5px;
+/* LOADING */
+
+#loader{
+  position:fixed;
+  width:100%;
+  height:100%;
+  background:#000;
+  display:flex;
+  justify-content:center;
+  align-items:center;
+  flex-direction:column;
+  z-index:9999;
+}
+
+#loader h1{
+  color:var(--neon);
+  margin-bottom:15px;
+  font-size:35px;
+}
+
+.barra{
+  width:230px;
+  height:10px;
+  background:#111;
+  border-radius:20px;
+  overflow:hidden;
+}
+
+.progresso{
+  width:0%;
+  height:100%;
+  background:var(--neon);
+  box-shadow:0 0 20px var(--neon);
+}
+
+/* NAV */
+
+nav{
+  width:100%;
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+  padding:15px 20px;
+  background:rgba(0,0,0,0.5);
+  backdrop-filter:blur(10px);
+  position:sticky;
+  top:0;
+  z-index:1000;
+}
+
+.logo{
+  font-size:24px;
+  font-weight:bold;
+  color:var(--neon);
+  text-shadow:0 0 10px var(--neon);
+}
+
+.menu-btn{
+  font-size:28px;
+  cursor:pointer;
+}
+
+.menu{
+  display:none;
+  position:absolute;
+  top:70px;
+  right:20px;
+  background:#111827;
+  padding:15px;
+  border-radius:15px;
+  box-shadow:0 0 20px rgba(255,0,60,0.4);
+}
+
+.menu a{
+  display:block;
+  color:white;
+  text-decoration:none;
+  margin:10px 0;
+}
+
+/* HERO */
+
+.hero{
+  text-align:center;
+  padding:90px 20px;
+}
+
+.badge{
+  display:inline-block;
+  padding:8px 18px;
+  border-radius:20px;
+  background:rgba(255,0,60,0.2);
+  margin-bottom:20px;
+  animation:pulse 2s infinite;
+}
+
+@keyframes pulse{
+  0%{box-shadow:0 0 5px var(--neon);}
+  50%{box-shadow:0 0 25px var(--neon);}
+  100%{box-shadow:0 0 5px var(--neon);}
+}
+
+.hero h1{
+  font-size:45px;
+  margin-bottom:15px;
+}
+
+.hero span{
+  color:var(--neon);
+}
+
+.hero p{
+  color:#ccc;
+  margin-bottom:25px;
+  font-size:18px;
 }
 
 /* BOTÃO */
+
 .btn{
-    padding:12px;
-    font-size:15px;
-    background:#39ff14;
-    border:none;
-    border-radius:10px;
-    font-weight:bold;
+  padding:15px 25px;
+  border:none;
+  border-radius:12px;
+  background:var(--neon);
+  color:white;
+  cursor:pointer;
+  font-size:16px;
+  transition:0.3s;
+  box-shadow:0 0 15px var(--neon);
 }
 
-/* APP */
-#app{
-    display:none;
+.btn:hover{
+  transform:scale(1.05);
+  box-shadow:0 0 30px var(--neon);
 }
 
-/* HEADER */
-.header{
-    background:#111;
-    padding:15px;
-    text-align:center;
-    color:#39ff14;
-    font-weight:bold;
+/* SECTION */
+
+.section{
+  padding:40px 20px;
 }
 
-/* TELAS */
-.tela{
-    display:none;
-    padding:10px;
-}
-
-.tela.ativa{
-    display:block;
+.section h2{
+  text-align:center;
+  margin-bottom:25px;
+  font-size:30px;
 }
 
 /* GRID */
+
 .grid{
-    display:grid;
-    grid-template-columns:1fr 1fr;
-    gap:12px;
+  display:grid;
+  grid-template-columns:repeat(auto-fit,minmax(250px,1fr));
+  gap:20px;
 }
 
-/* PRODUTOS */
-.prod{
-    background:#111;
-    padding:20px;
-    border-radius:15px;
-    min-height:140px;
-    display:flex;
-    flex-direction:column;
-    justify-content:space-between;
+/* CARD */
+
+.card{
+  background:rgba(15,23,42,0.8);
+  backdrop-filter:blur(10px);
+  padding:25px;
+  border-radius:20px;
+  border:1px solid rgba(255,0,60,0.3);
+  transition:0.3s;
+  text-align:center;
 }
 
-.prod h3{
-    font-size:18px;
+.card:hover{
+  transform:translateY(-8px) scale(1.02);
+  box-shadow:0 0 25px var(--neon);
 }
 
-.preco{
-    font-size:16px;
-    color:#39ff14;
+.card h3{
+  margin-bottom:10px;
+  font-size:26px;
 }
 
-/* MENU */
-.menu{
-    position:fixed;
-    bottom:0;
-    width:100%;
-    background:#0b0b0b;
-    display:flex;
-    justify-content:space-around;
-    padding:12px 0;
-    border-top:1px solid #222;
+.tempo{
+  font-size:20px;
+  margin-bottom:10px;
+  color:#ccc;
 }
 
-.menu button{
-    background:none;
-    border:none;
-    color:#39ff14;
-    font-size:20px;
+.price{
+  color:#00ff88;
+  font-size:28px;
+  margin-bottom:20px;
+  font-weight:bold;
 }
 
-/* BOTÃO CARRINHO */
-.carrinhoBtn{
-    position:fixed;
-    bottom:80px;
-    right:20px;
-    background:#39ff14;
-    color:black;
-    padding:18px;
-    border-radius:50%;
-    font-size:18px;
-    box-shadow:0 0 15px #39ff14;
+.buy{
+  width:100%;
+  padding:13px;
+  border:none;
+  border-radius:12px;
+  background:#1f2937;
+  color:white;
+  cursor:pointer;
+  transition:0.3s;
+  font-size:16px;
 }
 
-/* CARRINHO */
-.carrinho{
-    position:fixed;
-    right:-100%;
-    top:0;
-    width:80%;
-    height:100%;
-    background:#111;
-    padding:15px;
-    transition:0.3s;
+.buy:hover{
+  background:var(--neon);
 }
 
-.carrinho.ativo{
-    right:0;
+/* FEATURES */
+
+.features{
+  display:grid;
+  gap:15px;
 }
 
-.itemCarrinho{
-    display:flex;
-    justify-content:space-between;
-    border-bottom:1px solid #333;
-    padding:5px 0;
+.feature{
+  background:#111827;
+  padding:20px;
+  border-radius:15px;
+  border:1px solid rgba(255,0,60,0.3);
+  text-align:center;
+  font-size:18px;
 }
 
-.remover{
-    color:red;
-    cursor:pointer;
+/* STATS */
+
+.stats{
+  display:flex;
+  justify-content:space-around;
+  text-align:center;
+  flex-wrap:wrap;
+  gap:20px;
 }
+
+.stats h2{
+  color:var(--neon);
+  font-size:35px;
+}
+
+/* WHATS */
+
+.chat{
+  position:fixed;
+  bottom:90px;
+  right:20px;
+  width:65px;
+  height:65px;
+  background:var(--neon);
+  border-radius:50%;
+  display:flex;
+  justify-content:center;
+  align-items:center;
+  font-size:30px;
+  cursor:pointer;
+  box-shadow:0 0 20px var(--neon);
+  animation:pulse 2s infinite;
+}
+
+/* FIXO */
+
+.fixo{
+  position:fixed;
+  bottom:0;
+  width:100%;
+  background:#000;
+  padding:10px;
+}
+
+.fixo .btn{
+  width:100%;
+}
+
+/* RESPONSIVO */
+
+@media(max-width:600px){
+
+.hero h1{
+  font-size:32px;
+}
+
+.stats{
+  flex-direction:column;
+}
+
+}
+
 </style>
 </head>
 
 <body>
 
-<!-- LOGIN -->
-<div id="login">
-<h2>🔐 Login</h2>
-<input id="user" placeholder="Usuário">
-<input id="pass" type="password" placeholder="Senha">
-<button class="btn" onclick="entrar()">Entrar</button>
-<p onclick="criarConta()">Criar conta</p>
+<canvas id="bg"></canvas>
+
+<!-- LOADING -->
+
+<div id="loader">
+
+<h1>🔥 TOXIC STORE</h1>
+
+<div class="barra">
+<div class="progresso" id="progresso"></div>
 </div>
 
-<!-- APP -->
-<div id="app">
-
-<div class="header">🔥 TOXIC STORE 🔥</div>
-
-<!-- TELAS -->
-<div id="home" class="tela ativa">
-<h3>Bem-vindo 👋</h3>
-<p>⚡ Entrega rápida</p>
-<p>🔒 Pagamento via Pix</p>
 </div>
 
-<div id="produtos" class="tela">
+<!-- NAV -->
+
+<nav>
+
+<div class="logo">
+🔥 TOXIC STORE
+</div>
+
+<div class="menu-btn" onclick="toggleMenu()">
+☰
+</div>
+
+<div class="menu" id="menu">
+<a href="#">Início</a>
+<a href="#produtos">Produtos</a>
+<a href="#stats">Status</a>
+</div>
+
+</nav>
+
+<!-- HERO -->
+
+<section class="hero">
+
+<div class="badge">
++20K CLIENTES
+</div>
+
+<h1>
+DOMINE COM <span>TOXIC STORE</span>
+</h1>
+
+<p>
+DRIP CLIENT premium com entrega rápida.
+</p>
+
+<button class="btn" onclick="comprar('DRIP CLIENT')">
+🔥 VER TABELA
+</button>
+
+</section>
+
+<!-- PRODUTOS -->
+
+<section class="section" id="produtos">
+
+<h2>🔥 DRIP CLIENT</h2>
+
 <div class="grid">
 
-<div class="prod">
-<h3>1K Seguidores</h3>
-<p class="preco">R$ 6</p>
-<button class="btn" onclick="add('1K Seguidores',6)">Adicionar</button>
+<div class="card">
+<h3>DRIP CLIENT</h3>
+<div class="tempo">1 DIA</div>
+<div class="price">R$13,50</div>
+<button class="buy" onclick="comprar('DRIP CLIENT 1 DIA')">Comprar</button>
 </div>
 
-<div class="prod">
-<h3>2K Seguidores</h3>
-<p class="preco">R$ 8</p>
-<button class="btn" onclick="add('2K Seguidores',8)">Adicionar</button>
+<div class="card">
+<h3>DRIP CLIENT</h3>
+<div class="tempo">3 DIAS</div>
+<div class="price">R$28,00</div>
+<button class="buy" onclick="comprar('DRIP CLIENT 3 DIAS')">Comprar</button>
 </div>
 
-<div class="prod">
-<h3>3K Seguidores</h3>
-<p class="preco">R$ 11</p>
-<button class="btn" onclick="add('3K Seguidores',11)">Adicionar</button>
+<div class="card">
+<h3>DRIP CLIENT</h3>
+<div class="tempo">7 DIAS</div>
+<div class="price">R$42,00</div>
+<button class="buy" onclick="comprar('DRIP CLIENT 7 DIAS')">Comprar</button>
 </div>
 
-<div class="prod">
-<h3>5K Seguidores</h3>
-<p class="preco">R$ 19</p>
-<button class="btn" onclick="add('5K Seguidores',19)">Adicionar</button>
-</div>
-
-<div class="prod">
-<h3>10K Seguidores</h3>
-<p class="preco">R$ 40</p>
-<button class="btn" onclick="add('10K Seguidores',40)">Adicionar</button>
-</div>
-
-<div class="prod">
-<h3>Auxílio Free Fire</h3>
-<p class="preco">R$ 15</p>
-<button class="btn" onclick="add('Auxílio Free Fire',15)">Adicionar</button>
-</div>
-
-<div class="prod">
-<h3>Auxílio Coringa</h3>
-<p class="preco">R$ 15</p>
-<button class="btn" onclick="add('Auxílio Coringa',15)">Adicionar</button>
-</div>
-
-<div class="prod">
-<h3>Auxílio Online</h3>
-<p class="preco">R$ 10</p>
-<button class="btn" onclick="add('Auxílio Online',10)">Adicionar</button>
-</div>
-
-<div class="prod">
-<h3>Holograma + Antena</h3>
-<p class="preco">R$ 8,90</p>
-<button class="btn" onclick="add('Holograma + Antena',8.9)">Adicionar</button>
-</div>
-
-</div>
-</div>
-
-<div id="conta" class="tela">
-<h3>👤 Sua conta</h3>
-<p id="nomeUser"></p>
-<button class="btn" onclick="logout()">Sair</button>
-</div>
-
-<!-- MENU -->
-<div class="menu">
-<button onclick="trocar('home')">🏠</button>
-<button onclick="trocar('produtos')">🛒</button>
-<button onclick="trocar('conta')">👤</button>
+<div class="card">
+<h3>DRIP CLIENT</h3>
+<div class="tempo">30 DIAS</div>
+<div class="price">R$90,00</div>
+<button class="buy" onclick="comprar('DRIP CLIENT 30 DIAS')">Comprar</button>
 </div>
 
 </div>
 
-<!-- BOTÃO CARRINHO -->
-<div class="carrinhoBtn" onclick="toggleCarrinho()">
-🛒 <span id="qtd">0</span>
+</section>
+
+<!-- FEATURES -->
+
+<section class="section">
+
+<div class="features">
+
+<div class="feature">
+⚡ ENTREGA INSTANTÂNEA
 </div>
 
-<!-- CARRINHO -->
-<div class="carrinho">
-<h3>🛒 Carrinho</h3>
-<div id="lista"></div>
-<p>Total: R$ <span id="total">0</span></p>
-<button class="btn" onclick="finalizar()">Finalizar</button>
+<div class="feature">
+🔒 SEGURANÇA GARANTIDA
 </div>
+
+<div class="feature">
+💰 MELHOR PREÇO
+</div>
+
+</div>
+
+</section>
+
+<!-- STATS -->
+
+<section class="section" id="stats">
+
+<div class="stats">
+
+<div>
+<h2>+20K</h2>
+<p>Clientes</p>
+</div>
+
+<div>
+<h2>4.9⭐</h2>
+<p>Avaliações</p>
+</div>
+
+<div>
+<h2>24H</h2>
+<p>Suporte</p>
+</div>
+
+</div>
+
+</section>
+
+<!-- WHATS -->
+
+<div class="chat" onclick="abrirWhats()">
+💬
+</div>
+
+<!-- BOTÃO FIXO -->
+
+<div class="fixo">
+
+<button class="btn" onclick="abrirWhats()">
+🔥 CHAMAR NO WHATSAPP
+</button>
+
+</div>
+
+<!-- SOM -->
+
+<audio id="clickSound" src="https://www.soundjay.com/buttons/sounds/button-16.mp3"></audio>
 
 <script>
-let carrinho=[];
 
-/* LOGIN */
-function entrar(){
-    let u=user.value;
-    let p=pass.value;
+/* MENU */
 
-    if(localStorage.getItem("user")==u && localStorage.getItem("pass")==p){
-        login.style.display="none";
-        app.style.display="block";
-        nomeUser.innerText="Usuário: "+u;
-    } else alert("Erro no login");
+function toggleMenu(){
+
+let m=document.getElementById("menu");
+
+m.style.display = m.style.display==="block" ? "none" : "block";
+
 }
 
-function criarConta(){
-    localStorage.setItem("user",user.value);
-    localStorage.setItem("pass",pass.value);
-    alert("Conta criada!");
+/* COMPRAR */
+
+function comprar(produto){
+
+let msg = "Olá, quero comprar " + produto;
+
+window.location.href =
+"https://wa.me/5512991439382?text=" + encodeURIComponent(msg);
+
 }
 
-/* NAV */
-function trocar(t){
-    document.querySelectorAll(".tela").forEach(e=>e.classList.remove("ativa"));
-    document.getElementById(t).classList.add("ativa");
+/* WHATS */
+
+function abrirWhats(){
+
+window.location.href =
+"https://wa.me/5512991439382";
+
 }
 
-/* CARRINHO */
-function add(n,p){
-    carrinho.push({n,p});
-    atualizar();
+/* SOM */
+
+function playSound(){
+
+let som=document.getElementById("clickSound");
+
+som.currentTime=0;
+
+som.play();
+
 }
 
-function atualizar(){
-    qtd.innerText=carrinho.length;
-    let total=0, html="";
+document.querySelectorAll("button").forEach(btn=>{
 
-    carrinho.forEach((i,index)=>{
-        html+=`<div class="itemCarrinho">
-        ${i.n} - R$ ${i.p}
-        <span class="remover" onclick="remover(${index})">❌</span>
-        </div>`;
-        total+=i.p;
-    });
+btn.addEventListener("click",playSound);
 
-    lista.innerHTML=html;
-    document.getElementById("total").innerText=total.toFixed(2);
+});
+
+/* LOADING */
+
+let p=0;
+
+let barra=document.getElementById("progresso");
+
+let loading=setInterval(()=>{
+
+p += 5;
+
+barra.style.width=p+"%";
+
+if(p>=100){
+
+clearInterval(loading);
+
+document.getElementById("loader").style.display="none";
+
 }
 
-function remover(i){
-    carrinho.splice(i,1);
-    atualizar();
+},100);
+
+/* FUNDO */
+
+const canvas=document.getElementById("bg");
+
+const ctx=canvas.getContext("2d");
+
+canvas.width=window.innerWidth;
+canvas.height=window.innerHeight;
+
+let particles=[];
+
+for(let i=0;i<80;i++){
+
+particles.push({
+
+x:Math.random()*canvas.width,
+y:Math.random()*canvas.height,
+r:Math.random()*3,
+dx:(Math.random()-0.5),
+dy:(Math.random()-0.5)
+
+});
+
 }
 
-function toggleCarrinho(){
-    document.querySelector(".carrinho").classList.toggle("ativo");
+function animate(){
+
+ctx.clearRect(0,0,canvas.width,canvas.height);
+
+ctx.fillStyle="#ff003c";
+
+particles.forEach(p=>{
+
+ctx.beginPath();
+
+ctx.arc(p.x,p.y,p.r,0,Math.PI*2);
+
+ctx.fill();
+
+p.x += p.dx;
+p.y += p.dy;
+
+if(p.x<0||p.x>canvas.width) p.dx*=-1;
+if(p.y<0||p.y>canvas.height) p.dy*=-1;
+
+});
+
+requestAnimationFrame(animate);
+
 }
 
-function finalizar(){
-    let msg="🛒 Pedido:\n";
-    carrinho.forEach(i=>msg+=i.n+"\n");
+animate();
 
-    window.open("https://wa.me/5512991439382?text="+encodeURIComponent(msg));
-}
-
-function logout(){
-    location.reload();
-}
 </script>
 
 </body>
